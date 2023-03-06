@@ -24,7 +24,7 @@ FLAGS, FLAGS_DEF = mlxu.define_flags_with_default(
 def wait_for_ready():
     while True:
         try:
-            requests.get(FLAGS.lm_server_url)
+            requests.get(urllib.parse.urljoin(FLAGS.lm_server_url, 'ready'))
             return
         except (Timeout, ConnectionError) as e:
             time.sleep(10)
