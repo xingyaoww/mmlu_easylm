@@ -3,7 +3,15 @@ This is a fork of the [MMLU](https://github.com/hendrycks/test) repo with an
 additional script to run the evaluation against language models served by the
 [EasyLM](https://github.com/young-geng/EasyLM) lanaguage model server.
 
-To run the evaluation, first start the EasyLM server. Then, run the following
+## Installation
+To install the additional dependencies, run the following command:
+
+```bash
+pip install requests mlxu
+```
+
+## Evaluation
+To run the evaluation, first start the EasyLM server and then run the following
 command:
 
 ```bash
