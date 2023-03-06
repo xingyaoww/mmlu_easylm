@@ -1,3 +1,20 @@
+# MMLU with EasyLM Support
+This is a fork of the [MMLU](https://github.com/hendrycks/test) repo with an
+additional script to run the evaluation against language models served by the
+[EasyLM](https://github.com/young-geng/EasyLM) lanaguage model server.
+
+To run the evaluation, first start the EasyLM server. Then, run the following
+command:
+
+```bash
+python evaluate_easylm.py \
+    --name='<YOUR MODEL NAME>' \
+    --lm_server_url='<YOUR EASYLM SERVER URL>' \
+    --ntrain=5 \
+    --data_dir='<MMLU DATA DIR>' \
+    --save_dir='<MMLU RESULT DIR>'
+```
+
 # Measuring Massive Multitask Language Understanding
 This is the repository for [Measuring Massive Multitask Language Understanding](https://arxiv.org/pdf/2009.03300) by
 [Dan Hendrycks](https://people.eecs.berkeley.edu/~hendrycks/), [Collin Burns](http://collinpburns.com), [Steven Basart](https://stevenbas.art), [Andy Zou](https://andyzoujm.github.io/), Mantas Mazeika, [Dawn Song](https://people.eecs.berkeley.edu/~dawnsong/), and [Jacob Steinhardt](https://www.stat.berkeley.edu/~jsteinhardt/) (ICLR 2021).
