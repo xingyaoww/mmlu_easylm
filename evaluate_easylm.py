@@ -18,6 +18,8 @@ FLAGS, FLAGS_DEF = mlxu.define_flags_with_default(
     save_dir=('results', 'evaluation results directory'),
     lm_server_url=('http://localhost:5007/', 'EasyLM language model server URL'),
     wait_for_ready=(True, 'Wait for EasyLM server to be ready before starting evaluation'),
+    prompt_prefix=('', 'prefix string for the prompt'),
+    prompt_suffix=('', 'suffix string for the prompt'),
 )
 
 
@@ -86,6 +88,7 @@ def eval(subject, dev_df, test_df):
         prompt_end = format_example(test_df, i, include_answer=False)
         train_prompt = gen_prompt(dev_df, subject, k)
         prompt = train_prompt + prompt_end
+        prompt = FLAGS.prompt_prefix + prompt + FLAGS.prompt_suffix
 
         label = test_df.iloc[i, test_df.shape[1] - 1]
 
