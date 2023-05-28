@@ -1,5 +1,5 @@
-import argparse
 import os
+import json
 import numpy as np
 import pandas as pd
 from categories import subcategories, categories
@@ -161,16 +161,25 @@ def main(argv):
             index=None,
         )
 
+    metrics = {
+        "subcat_breakdown": {},
+        "cat_breakdown": {}
+    }
     for subcat in subcat_cors:
         subcat_acc = np.mean(np.concatenate(subcat_cors[subcat]))
+        metrics["subcat_breakdown"][subcat] = subcat_acc
         print("Average accuracy {:.3f} - {}".format(subcat_acc, subcat))
 
     for cat in cat_cors:
         cat_acc = np.mean(np.concatenate(cat_cors[cat]))
+        metrics["cat_breakdown"][cat] = cat_acc
         print("Average accuracy {:.3f} - {}".format(cat_acc, cat))
+    
     weighted_acc = np.mean(np.concatenate(all_cors))
     print("Average accuracy: {:.3f}".format(weighted_acc))
-
+    metrics["weighted_acc"] = weighted_acc
+    with open(os.path.join(FLAGS.save_dir, "results_{}".format(FLAGS.name), "metrics.json"), "w") as f:
+        json.dump(metrics, f)
 
 if __name__ == "__main__":
     mlxu.run(main)
