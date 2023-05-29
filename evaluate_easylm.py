@@ -124,8 +124,6 @@ def main(argv):
 
     if not os.path.exists(FLAGS.save_dir):
         os.makedirs(FLAGS.save_dir)
-    if not os.path.exists(os.path.join(FLAGS.save_dir, "results_{}".format(FLAGS.name))):
-        os.makedirs(os.path.join(FLAGS.save_dir, "results_{}".format(FLAGS.name)))
 
     all_cors = []
     subcat_cors = {
@@ -156,7 +154,7 @@ def main(argv):
             test_df["{}_choice{}_probs".format(FLAGS.name, choice)] = probs[:, j]
         test_df.to_csv(
             os.path.join(
-                FLAGS.save_dir, "results_{}".format(FLAGS.name), "{}.csv".format(subject)
+                FLAGS.save_dir, "{}.csv".format(subject)
             ),
             index=None,
         )
@@ -178,7 +176,7 @@ def main(argv):
     weighted_acc = np.mean(np.concatenate(all_cors))
     print("Average accuracy: {:.3f}".format(weighted_acc))
     metrics["weighted_acc"] = weighted_acc
-    with open(os.path.join(FLAGS.save_dir, "results_{}".format(FLAGS.name), "metrics.json"), "w") as f:
+    with open(os.path.join(FLAGS.save_dir, "metrics.json"), "w") as f:
         json.dump(metrics, f)
 
 if __name__ == "__main__":
