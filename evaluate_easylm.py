@@ -172,7 +172,7 @@ def main(argv):
     weighted_acc = np.mean(np.concatenate(all_cors))
     print("Average accuracy: {:.3f}".format(weighted_acc))
     metrics["weighted_acc"] = weighted_acc
-    with tf.io.gfile.GFile(os.path.join(FLAGS.save_dir, "metrics.json"), "w") as f:
+    with tf.io.gfile.GFile(os.path.join(FLAGS.save_dir, "results.json"), "w") as f:
         json.dump(metrics, f)
 
 if __name__ == "__main__":
