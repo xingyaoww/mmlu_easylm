@@ -9,7 +9,7 @@ import urllib
 import requests
 from requests.exceptions import Timeout, ConnectionError
 import mlxu
-
+import tensorflow as tf
 
 FLAGS, FLAGS_DEF = mlxu.define_flags_with_default(
     name=('easylm_model', 'name of the model'),
@@ -122,9 +122,6 @@ def main(argv):
         ]
     )
 
-    if not os.path.exists(FLAGS.save_dir):
-        os.makedirs(FLAGS.save_dir)
-
     all_cors = []
     subcat_cors = {
         subcat: [] for subcat_lists in subcategories.values() for subcat in subcat_lists
@@ -152,12 +149,11 @@ def main(argv):
         for j in range(probs.shape[1]):
             choice = choices[j]
             test_df["{}_choice{}_probs".format(FLAGS.name, choice)] = probs[:, j]
-        test_df.to_csv(
-            os.path.join(
-                FLAGS.save_dir, "{}.csv".format(subject)
-            ),
-            index=None,
-        )
+
+        with tf.io.gfile.GFile(
+            os.path.join(FLAGS.save_dir, "{}.csv".format(subject)), "w",
+        ) as f:
+            test_df.to_csv(f, index=False)
 
     metrics = {
         "subcat_breakdown": {},
@@ -176,7 +172,7 @@ def main(argv):
     weighted_acc = np.mean(np.concatenate(all_cors))
     print("Average accuracy: {:.3f}".format(weighted_acc))
     metrics["weighted_acc"] = weighted_acc
-    with open(os.path.join(FLAGS.save_dir, "metrics.json"), "w") as f:
+    with tf.io.gfile.GFile(os.path.join(FLAGS.save_dir, "metrics.json"), "w") as f:
         json.dump(metrics, f)
 
 if __name__ == "__main__":
